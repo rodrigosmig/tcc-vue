@@ -3,7 +3,7 @@
     <b-table :items="searchs" :fields="fields">
     <template slot="show_details" slot-scope="tweet">
       <b-button size="sm" @click.stop="tweet.toggleDetails" @click="getTweets(tweet.item.id)" class="mr-2">
-       {{ tweet.detailsShowing ? 'Hide' : 'Show'}} Details
+       {{ tweet.detailsShowing ? 'Esconder' : 'Mostrar'}} Tweets
       </b-button>
     </template>
     <template slot="row-details" slot-scope="tweet">
@@ -61,7 +61,7 @@
             }
           },
         searchs: [],
-        url: "http://localhost:8000/",
+        url: "https://analise-sentimento.herokuapp.com/",
         tweet_data: []
       }
     },

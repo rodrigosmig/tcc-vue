@@ -68,6 +68,8 @@
                 axios.get(this.url + "?search=" + this.search).then(tweets => {
                     this.tweets = tweets.data;
                     this.loading = false;              
+                }).catch(response => {
+                    console.log(response)
                 })
                 this.display = this.$route.query.display;
             }           
@@ -78,7 +80,7 @@
                 search: null,
                 loading: false,
                 tweets: [],
-                url: "http://localhost:8000/tweets/"
+                url: "https://analise-sentimento.herokuapp.com/tweets/"
         }
     },
         methods: {
