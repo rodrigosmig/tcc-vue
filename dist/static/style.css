@@ -1,4 +1,4 @@
-/* body:before {
+body:before {
     content:"";
     position: fixed;
     width: 100vw;
@@ -12,4 +12,5 @@
     -o-filter: blur(3px);
     -ms-filter: blur(3px);
     filter: blur(3px);
-} */
+    z-index: 0;
+}
