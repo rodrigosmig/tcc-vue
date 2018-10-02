@@ -70,7 +70,6 @@
     methods: {
       getTweets(id, hide) {
         axios.get(this.url + "tweets/?search_id=" + id).then(response => {
-          console.log(response.data)
           this.tweet_data = response.data
         })
       }

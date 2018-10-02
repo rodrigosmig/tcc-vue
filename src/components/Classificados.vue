@@ -13,8 +13,8 @@
                 <div class="panel-heading">
                     <h4 class="media-heading">Busca: <strong>{{search}}</strong></h4>
                     <div v-if="show_classification">
-                        <h5 class="media-heading">Classificações Positivas: <strong>{{cont_pos}}</strong></h5>
-                        <h5 class="media-heading">Classificações Negativas: <strong>{{cont_neg}}</strong></h5>
+                        <h5 class="media-heading">Classificações Positivas: <strong style="color: blue">{{cont_pos}}</strong></h5>
+                        <h5 class="media-heading">Classificações Negativas: <strong style="color: red">{{cont_neg}}</strong></h5>
                     </div>
                     
                 </div>
@@ -87,7 +87,7 @@
                             this.cont_pos++
                         }
                     }
-                    console.log(this.cont_pos, this.cont_neg)
+                    this.show_classification = true
                     this.loading = false;              
                 }).catch(response => {
                     this.error_twitter = true
