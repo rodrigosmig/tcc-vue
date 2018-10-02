@@ -1,8 +1,9 @@
 <template>
   <div class="content">
+    <br><br><br><br>
     <b-table :items="searchs" :fields="fields">
     <template slot="show_details" slot-scope="tweet">
-      <b-button size="sm" @click.stop="tweet.toggleDetails" @click="getTweets(tweet.item.id)" class="mr-2">
+      <b-button size="sm" @click.stop="tweet.toggleDetails" @click="getTweets(tweet.item.id, tweet.detailsShowing)" class="mr-2">
        {{ tweet.detailsShowing ? 'Esconder' : 'Mostrar'}} Tweets
       </b-button>
     </template>
@@ -62,12 +63,12 @@
           },
         searchs: [],
         url: "https://analise-sentimento.herokuapp.com/",
-        tweet_data: []
+        /* url: "http://localhost:8000/", */
+        tweet_data: [],
       }
     },
     methods: {
-      getTweets(id) {
-        console.log(this.url + "tweets/?search_id=" + id)
+      getTweets(id, hide) {
         axios.get(this.url + "tweets/?search_id=" + id).then(response => {
           console.log(response.data)
           this.tweet_data = response.data
@@ -80,8 +81,17 @@
 <style>
   .content {
     width: 60%;
-    margin-top: 70px;
+    /* margin-top: 70px; */
     margin-left: auto;
     margin-right: auto;
+  }
+  .positivo {
+    color: blue;
+  }
+  .negativo {
+    color: red;
+  }
+  h3 {
+    text-align: center;
   }
 </style>

@@ -26,6 +26,9 @@ export default {
 </script>
 
 <style>
+  body {
+    background-color: #dee2e6;
+  }
   .navbar {
     background: rgba(0, 0, 0, 1);
   }
