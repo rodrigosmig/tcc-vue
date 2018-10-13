@@ -105,8 +105,8 @@
                 search: null,
                 loading: false,
                 tweets: [],
-                /* url: "https://analise-sentimento.herokuapp.com/tweets/", */
-                url: "http://localhost:8000/tweets/",
+                url: "https://analise-sentimento.herokuapp.com/tweets/",
+                /* url: "http://localhost:8000/tweets/", */
                 error_twitter: false,
                 show_classification: false,
                 cont_pos: 0,

@@ -1,6 +1,7 @@
 <template>
   <div class="content">
     <br><br><br>
+    
     <b-table :items="searchs" :fields="fields" v-if="show_table">
       <template slot="show_details" slot-scope="tweet">
         <b-button size="sm" class="mr-2" @click="getTweets(tweet.item.id)">
@@ -8,6 +9,12 @@
         </b-button>
       </template>
     </b-table>
+
+    <div v-show="loading_table" id="loading_table">
+      <i class="fa fa-spinner fa-pulse fa-3x fa-fw" ></i>
+      <span>...carregando</span>
+    </div>
+
     <div v-if="!show_table">
       <div v-show="!loading">
         <b-button size="sm" class="" @click="backTable" variant="primary">Voltar</b-button>
@@ -63,6 +70,7 @@
     created() {
       axios.get(this.url + "buscas/").then(response => {
         this.searchs = response.data;
+        this.loading_table = false
       })
     },
     data () {
@@ -76,7 +84,7 @@
               sortable: true,
               label: 'Data da Busca',
               formatter: (value, key, item) => {
-                return moment(String(value)).format('MM/DD/YYYY hh:mm')
+                return moment(String(value)).format('DD/MM/YYYY hh:mm')
               }
             },
             show_details: {
@@ -84,8 +92,8 @@
             }
           },
         searchs: [],
-        /* url: "https://analise-sentimento.herokuapp.com/", */
-        url: "http://localhost:8000/",
+        url: "https://analise-sentimento.herokuapp.com/",
+        /* url: "http://localhost:8000/", */
         tweet_data: [],
         show_table: true,
         total: 0,
@@ -94,7 +102,8 @@
         porcent_pos: 0,
         porcent_neg: 0,
         total_changes: 0,
-        loading: true
+        loading: true,
+        loading_table: true
       }
     },
     methods: {
