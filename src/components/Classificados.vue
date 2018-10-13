@@ -1,20 +1,26 @@
 <template>
 
     <div>
-        <br><br><br><br>
+        <br><br><br>
         <div class="content col-md-6">
+            <div class="voltar" v-if="show_classification">
+                <b-link :to="{ name: 'Home'}">
+                    <b-button size="sm" variant="primary">Voltar</b-button>
+                </b-link>
+            </div> 
             <div v-show="loading" id="loading">
                 <i class="fa fa-spinner fa-pulse fa-3x fa-fw" ></i>
                 <span>...coletando tweets</span>
-            </div>
+            </div>            
             <!-- só exibira a div se uma pesquisa for realizada -->
             <div v-if="display && search != null" class="panel panel-info">
                                 
                 <div class="panel-heading">
                     <h4 class="media-heading">Busca: <strong>{{search}}</strong></h4>
                     <div v-if="show_classification">
-                        <h5 class="media-heading">Classificações Positivas: <strong style="color: blue">{{cont_pos}}</strong></h5>
-                        <h5 class="media-heading">Classificações Negativas: <strong style="color: red">{{cont_neg}}</strong></h5>
+                        <h5 class="media-heading">Total coletados: <strong style="color: blue">{{tweets_size}}</strong></h5>
+                        <h5 class="media-heading">Classificações Positivas: <strong style="color: blue">{{cont_pos}}</strong> ({{porcent_pos}}%)</h5>
+                        <h5 class="media-heading">Classificações Negativas: <strong style="color: red">{{cont_neg}}</strong> ({{porcent_neg}}%)</h5>
                     </div>
                     
                 </div>
@@ -30,21 +36,15 @@
                     </p>
                     <span class="user">@{{tweet.user}}</span>
                     <div class="tweet">{{tweet.tweet_text}}</div>
-                    <div class="correcao">Corrigir classificação:</div>
-                    <ul class="nav">
-                        <li v-if="tweet.classification == 1" class="nav-item">
-                            <span class="nav-link"><i class="fas fa-thumbs-up" style="color: blue"></i></span>
-                        </li>
-                        <li v-else class="nav-item">
-                            <a @click="toPositive(index, tweet.id)" class="nav-link" href="javascript:void(0)" title="Alterar para positivo"><i class="fas fa-thumbs-up" style="color: blue"></i></a>
-                        </li>
-                        <li v-if="tweet.classification == 0" class="nav-item">
-                            <span class="nav-link"><i class="fas fa-thumbs-down" style="color: red"></i></span>
-                        </li>
-                        <li v-else class="nav-item">
-                            <a @click="toNegative(index, tweet.id)" class="nav-link" href="javascript:void(0)" title="Alterar para negativo"><i class="fas fa-thumbs-down" style="color: red"></i></a>
-                        </li>
-                    </ul>
+                    <div class="correcao">
+                        <span v-if="tweet.classification == 1">
+                            Alterar classificação: <a @click="toNegative(index, tweet.id)" class="nav-link" href="javascript:void(0)" title="Alterar para negativo"><i class="fas fa-thumbs-down" style="color: red"></i></a>
+                        </span>
+                        <span v-else>
+                            Alterar classificação:<a @click="toPositive(index, tweet.id)" class="nav-link" href="javascript:void(0)" title="Alterar para positivo"><i class="fas fa-thumbs-up" style="color: blue"></i></a>
+                        </span>
+                    </div>
+                    
                 </div>
 
             </div>
@@ -79,6 +79,8 @@
                 this.loading = true;
                 axios.get(this.url + "?search=" + this.search).then(tweets => {
                     this.tweets = tweets.data;
+                    this.tweets_size = this.tweets.length
+                    
                     for(let tweet of this.tweets) {
                         if(tweet.classification == 0) {
                             this.cont_neg++
@@ -88,7 +90,8 @@
                         }
                     }
                     this.show_classification = true
-                    this.loading = false;              
+                    this.loading = false
+                    this.setPercent()
                 }).catch(response => {
                     this.error_twitter = true
                     this.loading = false
@@ -102,12 +105,15 @@
                 search: null,
                 loading: false,
                 tweets: [],
-                url: "https://analise-sentimento.herokuapp.com/tweets/",
-                /* url: "http://localhost:8000/tweets/", */
+                /* url: "https://analise-sentimento.herokuapp.com/tweets/", */
+                url: "http://localhost:8000/tweets/",
                 error_twitter: false,
                 show_classification: false,
                 cont_pos: 0,
-                cont_neg: 0
+                cont_neg: 0,
+                tweets_size: 0,
+                porcent_pos: 0,
+                porcent_neg: 0
         }
     },
         methods: {
@@ -118,6 +124,7 @@
                     this.tweets.splice(index, 1, change)
                     this.cont_neg--
                     this.cont_pos++
+                    this.setPercent()
                 }).catch(error => {
                     alert("Classificação não alterada. Tente novamente.")
                 })
@@ -129,9 +136,14 @@
                     this.tweets.splice(index, 1, change)
                     this.cont_neg++
                     this.cont_pos--
+                    this.setPercent()
                 }).catch(error => {
                     alert("Classificação não alterada. Tente novamente.")
                 })
+            },
+            setPercent: function() {
+                this.porcent_pos = ((this.cont_pos / this.tweets_size) * 100).toFixed(2)
+                this.porcent_neg = ((this.cont_neg / this.tweets_size) * 100).toFixed(2)
             }
         }
     }
@@ -185,9 +197,13 @@
 
     .correcao {
         padding-top: 10px;
-        
+        padding-bottom: 10px;
     }
     .twitter_error {
         margin-top: 10px;
+    }
+
+    .voltar {
+        margin-bottom: 10px;
     }
 </style>

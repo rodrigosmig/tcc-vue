@@ -8,10 +8,10 @@
       <b-collapse is-nav id="nav_collapse">
 
         <b-navbar-nav class="ml-auto">
-          <!-- <b-nav-item type="submit" v-b-tooltip.hover title="Buscas cadastradas">
+          <b-nav-item v-b-tooltip.hover title="Buscas cadastradas">
             <b-link :to="{ name: 'Buscas'}">Buscas</b-link>
-          </b-nav-item> -->
-          <b-link :to="{ name: 'Buscas'}" class="nav-link">Buscas</b-link>
+          </b-nav-item>
+          <!-- <b-link :to="{ name: 'Buscas'}" class="nav-link">Buscas</b-link> -->
         </b-navbar-nav>
 
       </b-collapse>

@@ -2,7 +2,7 @@
     <div>      
       <div class="input-group mb-3 termo-busca">
         <b-input-group >
-          <b-form-input v-model="search" :state="error" type="text" placeholder="Digite o termo de busca"></b-form-input>
+          <b-form-input v-model="search" :state="error" @keyup.enter.native="collect_tweets" type="text" placeholder="Digite o termo de busca"></b-form-input>
           <b-input-group-append>
             <b-button variant="outline-secondary" @click="collect_tweets" type="submit" title="buscar">
               <i class="fas fa-search"></i>
