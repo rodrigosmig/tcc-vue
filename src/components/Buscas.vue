@@ -84,7 +84,7 @@
               sortable: true,
               label: 'Data da Busca',
               formatter: (value, key, item) => {
-                return moment(String(value)).format('DD/MM/YYYY hh:mm')
+                return moment(String(value)).format('DD/MM/YYYY HH:mm')
               }
             },
             show_details: {
